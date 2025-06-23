@@ -1,34 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react'
+import { supabase } from './supabaseClient'
+
+type Product = {
+  id: number
+  name: string
+  description: string
+  image_url: string
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [products, setProducts] = useState<Product[]>([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, error } = await supabase.from('inventory').select('*')
+      if (data) setProducts(data)
+    }
+    fetchData()
+  }, [])
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div style={{ padding: 20 }}>
+      <h1>在庫一覧</h1>
+      {products.length === 0 && <p>在庫がありません</p>}
+      {products.map((product) => (
+        <div key={product.id} style={{ border: '1px solid #ccc', margin: 10, padding: 10 }}>
+          <h3>{product.name}</h3>
+          <p>{product.description}</p>
+          {product.image_url && <img src={product.image_url} alt={product.name} width={200} />}
+        </div>
+      ))}
+    </div>
   )
 }
 
