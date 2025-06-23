@@ -3,7 +3,7 @@ import { supabase } from './supabaseClient'
 
 type Product = {
   id: number
-  name: stringu
+  name: string
   description: string
   image_url: string
 }
