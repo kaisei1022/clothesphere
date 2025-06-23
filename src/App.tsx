@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { supabase } from '../supabaseClient'
+import { supabase } from './supabaseClient'
+
 type Product = {
   id: number
   name: string
@@ -13,9 +14,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       const { data, error } = await supabase.from('inventory').select('*')
-
       if (error) console.error('Supabase fetch error:', error)
-        
       if (data) setProducts(data)
     }
     fetchData()
@@ -26,10 +25,10 @@ function App() {
       <h1>在庫一覧</h1>
       {products.length === 0 && <p>在庫がありません</p>}
       {products.map((product) => (
-        <div key={product.id} style={{ border: '1px solid #ccc', margin: 10, padding: 10 }}>
+        <div key={product.id} style={{ borderBottom: '1px solid #ccc', marginBottom: '1rem' }}>
           <h3>{product.name}</h3>
           <p>{product.description}</p>
-          {product.image_url && <img src={product.image_url} alt={product.name} width={200} />}
+          {product.image_url && <img src={product.image_url} alt={product.name} width="200" />}
         </div>
       ))}
     </div>
