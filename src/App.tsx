@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import { supabase } from './supabaseClient'
-
+import { supabase } from '../supabaseClient'
 type Product = {
   id: number
   name: string
@@ -14,6 +13,9 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       const { data, error } = await supabase.from('inventory').select('*')
+
+      if (error) console.error('Supabase fetch error:', error)
+        
       if (data) setProducts(data)
     }
     fetchData()
