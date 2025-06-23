@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { supabase } from '../supabaseClient'
+import { supabase } from './supabaseClient'
 
 type Product = {
   id: number
-  name: string
+  name: stringu
   description: string
   image_url: string
 }
